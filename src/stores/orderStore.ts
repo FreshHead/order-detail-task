@@ -7,6 +7,7 @@ export const useOrderStore = defineStore('order', () => {
   const mockOrder = ref<Order>({
     title: 'Стартер редукторный',
     status: Status.Draft,
+    files: [],
     manufacturer: {
       name: 'Завод 1',
       website: 'zavod101.ru',

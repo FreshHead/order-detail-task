@@ -33,7 +33,6 @@ defineProps<{ label: string; value: string }>();
   width: 100%;
   border-top: 1.5px dotted #d1d1d6;
   position: absolute;
-  z-index: -1;
   top: 12px;
 }
 
@@ -45,5 +44,7 @@ defineProps<{ label: string; value: string }>();
   color: #868695;
   background-color: #fff;
   border-right: 6px solid #fff;
+  position: absolute;
+  z-index: 2;
 }
 </style>

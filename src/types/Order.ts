@@ -4,6 +4,7 @@ export interface Order {
   title: string;
   description?: string;
   status: Status;
+  files: string[];
   manufacturer: {
     name: string;
     website?: string;

@@ -29,6 +29,7 @@ function onSave() {
 <template>
   <div class="order-form">
     <div>
+      <n-h2>Изображение</n-h2>
       <n-upload>
         <n-upload-dragger>
           <div>
@@ -36,9 +37,10 @@ function onSave() {
               <ArchiveIcon />
             </n-icon>
           </div>
-          <n-text> Нажмите или перетащите фотографию заказа </n-text>
+          <n-text> Нажмите или перетащите изображение заказа </n-text>
         </n-upload-dragger>
       </n-upload>
+      <n-h2>Вложения</n-h2>
       <n-upload multiple directory-dnd :max="5">
         <n-upload-dragger>
           <div>

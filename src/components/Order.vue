@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useOrderStore } from '@/stores/orderStore';
-import { NButton, NH2, NImage } from 'naive-ui';
+import { NButton, NH1, NH2, NImage } from 'naive-ui';
 import OrderProp from './OrderProp.vue';
 
 defineEmits(['edit']);
@@ -9,11 +9,19 @@ const { order } = useOrderStore();
 <template>
   <div class="order">
     <div>
-      <n-image />
+      <n-image src="public/starter.webp" :show-toolbar="false" width="100%" />
+      <n-h2>Вложения</n-h2>
+      <n-text class="order__no-attachments-text"
+        >Вложений нет. Добавьте их в режиме редактирования.</n-text
+      >
+      <n-text v-for="file in order.files">{{ file }}</n-text>
     </div>
     <div>
-      <h1>{{ order.title }}</h1>
-      <span v-html="order.description" />
+      <n-h1>{{ order.title }}</n-h1>
+      <div v-if="order.description">
+        <n-h2>Описание заказа</n-h2>
+        <span v-html="order.description" />
+      </div>
       <n-h2>Данные изготовителя</n-h2>
       <OrderProp label="Изготовитель" :value="order.manufacturer.name" />
       <OrderProp
