@@ -1,17 +1,31 @@
 <script setup lang="ts">
 import { useOrderStore } from '@/stores/orderStore';
-import { NButton } from 'naive-ui';
+import { NButton, NH2, NImage } from 'naive-ui';
+import OrderProp from './OrderProp.vue';
 
 defineEmits(['edit']);
 const { order } = useOrderStore();
 </script>
 <template>
   <div class="order">
-    <div></div>
+    <div>
+      <n-image />
+    </div>
     <div>
       <h1>{{ order.title }}</h1>
+      <span v-html="order.description" />
+      <n-h2>Данные изготовителя</n-h2>
+      <OrderProp label="Изготовитель" :value="order.manufacturer.name" />
+      <OrderProp
+        v-if="order.manufacturer.website"
+        label="Сайт"
+        :value="order.manufacturer.website"
+      />
+      <n-h2>Информация об организации заказчика</n-h2>
+      <OrderProp label="Наименование" :value="order.customer.name" />
+      <OrderProp v-if="order.customer.website" label="Сайт" :value="order.customer.website" />
     </div>
-    <div class="order-buttons">
+    <div class="order__buttons">
       <n-button type="primary" @click="$emit('edit')">Редактировать </n-button>
     </div>
   </div>
@@ -24,7 +38,7 @@ const { order } = useOrderStore();
   gap: 16px;
 }
 
-.order-buttons {
+.order__buttons {
   grid-column: 2;
   display: flex;
   justify-content: flex-end;

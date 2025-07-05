@@ -1,10 +1,28 @@
 <script setup lang="ts">
-import { NUpload, NUploadDragger, NIcon, NForm, NFormItem, NInput, NText, NButton } from 'naive-ui';
+import { ref } from 'vue';
+import {
+  NH1,
+  NH2,
+  NUpload,
+  NUploadDragger,
+  NIcon,
+  NForm,
+  NFormItem,
+  NInput,
+  NText,
+  NButton,
+} from 'naive-ui';
 import { ArchiveOutline as ArchiveIcon } from '@vicons/ionicons5';
+import { useOrderStore } from '@/stores/orderStore';
+import Editor from './Editor.vue';
 
 const emit = defineEmits(['saved', 'cancel']);
 
+const { order, save } = useOrderStore();
+const state = ref(order);
+
 function onSave() {
+  save(state.value);
   emit('saved');
 }
 </script>
@@ -33,11 +51,37 @@ function onSave() {
       </n-upload>
     </div>
     <n-form>
-      <n-form-item label="">
-        <n-input />
+      <n-h1>Информация о заказе</n-h1>
+      <n-form-item label="Заголовок заказа">
+        <n-input placeholder="Название" v-model:value="state.title" />
       </n-form-item>
+      <n-form-item label="Описание заказа">
+        <Editor v-model="state.description" />
+      </n-form-item>
+      <div>
+        <n-h2>Данные изготовителя</n-h2>
+        <div class="order-form__group">
+          <n-form-item label="Изготовитель">
+            <n-input placeholder="Завод 101" v-model:value="state.manufacturer.name" />
+          </n-form-item>
+          <n-form-item label="Сайт">
+            <n-input placeholder="zavod101.ru" v-model:value="state.manufacturer.website" />
+          </n-form-item>
+        </div>
+      </div>
+      <div>
+        <n-h2>Информация об организации заказчика</n-h2>
+        <div class="order-form__group">
+          <n-form-item label="Наименование">
+            <n-input placeholder="ООО ТестоСтрой" v-model:value="state.customer.name" />
+          </n-form-item>
+          <n-form-item label="Сайт">
+            <n-input placeholder="testo-stroy.ru" v-model:value="state.customer.website" />
+          </n-form-item>
+        </div>
+      </div>
     </n-form>
-    <div class="order-form-buttons">
+    <div class="order-form__buttons">
       <n-button type="primary" @click="onSave">Сохранить </n-button>
       <n-button type="tertiary" @click="$emit('cancel')">Отменить </n-button>
     </div>
@@ -48,13 +92,18 @@ function onSave() {
 .order-form {
   display: grid;
   grid-template-columns: 0.8fr 1fr;
-  gap: 16px;
+  gap: 2rem;
 }
 
-.order-form-buttons {
+.order-form__buttons {
   grid-column: 2;
   display: flex;
   justify-content: flex-end;
-  gap: 16px;
+  gap: 1rem;
+}
+
+.order-form__group {
+  display: flex;
+  gap: 1rem;
 }
 </style>

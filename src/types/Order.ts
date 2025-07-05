@@ -6,9 +6,7 @@ export interface Order {
   status: Status;
   manufacturer: {
     name: string;
-    country: string;
     website?: string;
-    address?: string;
   };
   customer: {
     name: string;

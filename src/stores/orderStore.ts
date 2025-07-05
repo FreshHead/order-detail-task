@@ -9,10 +9,11 @@ export const useOrderStore = defineStore('order', () => {
     status: Status.Draft,
     manufacturer: {
       name: 'Завод 1',
-      country: 'Россия',
+      website: 'zavod101.ru',
     },
     customer: {
       name: 'Организация 1',
+      website: 'test-organization.ru',
     },
   });
 
