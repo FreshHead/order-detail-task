@@ -2,6 +2,7 @@ import type { Order } from '@/types/Order';
 import { Status } from '@/types/Status';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
+import imageUrl from '@/assets/images/starter.webp';
 
 export const useOrderStore = defineStore('order', () => {
   const mockOrder = ref<Order>({
@@ -10,7 +11,7 @@ export const useOrderStore = defineStore('order', () => {
     image: {
       id: 'starter.webp',
       name: 'starter.webp',
-      url: '/public/starter.webp',
+      url: imageUrl,
       status: 'finished',
     },
     filenames: [],
