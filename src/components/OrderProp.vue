@@ -18,6 +18,7 @@ defineProps<{ label: string; value: string }>();
 <style scoped>
 .order-prop {
   display: inline-flex;
+  gap: 4px;
   width: 100%;
 }
 

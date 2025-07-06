@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import {
   NH1,
   NH2,
@@ -11,26 +11,56 @@ import {
   NInput,
   NText,
   NButton,
+  type UploadSettledFileInfo,
+  type UploadFileInfo,
 } from 'naive-ui';
 import { ArchiveOutline as ArchiveIcon } from '@vicons/ionicons5';
 import { useOrderStore } from '@/stores/orderStore';
 import Editor from './Editor.vue';
+import type { Order } from '@/types/Order';
 
 const emit = defineEmits(['saved', 'cancel']);
 
 const { order, save } = useOrderStore();
-const state = ref(order);
+const state = ref<Order>(JSON.parse(JSON.stringify(order)));
+
+const previewFileList = computed<UploadFileInfo[] | undefined>(() => {
+  if (state.value.image) {
+    return [state.value.image];
+  }
+});
+
+function onImageUpdate(fileInfoList: UploadSettledFileInfo[]) {
+  const newFile = fileInfoList.pop();
+  if (newFile?.file) {
+    state.value.image = { ...newFile, url: URL.createObjectURL(newFile.file) };
+  }
+}
+
+function onAttachmentsUpdate(files: UploadSettledFileInfo[]) {
+  state.value.filenames = files.map((file) => file.name);
+}
 
 function onSave() {
   save(state.value);
   emit('saved');
+}
+
+function onCancel() {
+  state.value = JSON.parse(JSON.stringify(order));
+  emit('cancel');
 }
 </script>
 <template>
   <div class="order-form">
     <div>
       <n-h2>Изображение</n-h2>
-      <n-upload>
+      <n-upload
+        accept="image/*"
+        :file-list="previewFileList"
+        list-type="image"
+        @update-file-list="onImageUpdate"
+      >
         <n-upload-dragger>
           <div>
             <n-icon size="48" :depth="3">
@@ -41,7 +71,7 @@ function onSave() {
         </n-upload-dragger>
       </n-upload>
       <n-h2>Вложения</n-h2>
-      <n-upload multiple directory-dnd :max="5">
+      <n-upload multiple directory-dnd :max="5" @update-file-list="onAttachmentsUpdate">
         <n-upload-dragger>
           <div>
             <n-icon size="48" :depth="3">
@@ -85,7 +115,7 @@ function onSave() {
     </n-form>
     <div class="order-form__buttons">
       <n-button type="primary" @click="onSave">Сохранить </n-button>
-      <n-button type="tertiary" @click="$emit('cancel')">Отменить </n-button>
+      <n-button type="tertiary" @click="onCancel">Отменить </n-button>
     </div>
   </div>
 </template>

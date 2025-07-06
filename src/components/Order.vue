@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import { useOrderStore } from '@/stores/orderStore';
-import { NButton, NH1, NH2, NImage } from 'naive-ui';
+import { NButton, NH1, NH2, NImage, NText } from 'naive-ui';
 import OrderProp from './OrderProp.vue';
+import { storeToRefs } from 'pinia';
 
 defineEmits(['edit']);
-const { order } = useOrderStore();
+const { order } = storeToRefs(useOrderStore());
 </script>
 <template>
   <div class="order">
     <div>
-      <n-image src="public/starter.webp" :show-toolbar="false" width="100%" />
+      <n-image :src="order.image?.url" :show-toolbar="false" width="100%" />
       <n-h2>Вложения</n-h2>
-      <n-text class="order__no-attachments-text"
+      <n-text v-if="order.filenames.length === 0"
         >Вложений нет. Добавьте их в режиме редактирования.</n-text
       >
-      <n-text v-for="file in order.files">{{ file }}</n-text>
+      <n-text v-else v-for="name in order.filenames">{{ name }}</n-text>
     </div>
     <div>
       <n-h1>{{ order.title }}</n-h1>

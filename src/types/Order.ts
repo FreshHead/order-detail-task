@@ -1,10 +1,12 @@
+import type { UploadFileInfo } from 'naive-ui';
 import type { Status } from './Status';
 
 export interface Order {
   title: string;
   description?: string;
   status: Status;
-  files: string[];
+  image?: UploadFileInfo & { url: string };
+  filenames: string[];
   manufacturer: {
     name: string;
     website?: string;

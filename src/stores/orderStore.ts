@@ -7,7 +7,13 @@ export const useOrderStore = defineStore('order', () => {
   const mockOrder = ref<Order>({
     title: 'Стартер редукторный',
     status: Status.Draft,
-    files: [],
+    image: {
+      id: 'starter.webp',
+      name: 'starter.webp',
+      url: '/public/starter.webp',
+      status: 'finished',
+    },
+    filenames: [],
     manufacturer: {
       name: 'Завод 1',
       website: 'zavod101.ru',
@@ -21,7 +27,7 @@ export const useOrderStore = defineStore('order', () => {
   const order = computed(() => mockOrder.value);
 
   function save(order: Order) {
-    mockOrder.value = order;
+    mockOrder.value = JSON.parse(JSON.stringify(order));
   }
 
   return { order, save };
