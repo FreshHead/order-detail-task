@@ -57,6 +57,10 @@ const currentStep = computed(() => statusStepsMap[order.value.status]);
       <OrderProp v-if="order.customer.website" label="Сайт" :value="order.customer.website" />
     </div>
     <div class="order__buttons">
+      <div class="buttons__additional-buttons">
+        <n-button>Перейти в чат</n-button>
+        <n-button>Связаться с поддержкой</n-button>
+      </div>
       <n-button type="primary" @click="$emit('edit')">Редактировать </n-button>
     </div>
   </div>
@@ -72,7 +76,12 @@ const currentStep = computed(() => statusStepsMap[order.value.status]);
 .order__buttons {
   grid-column: 2;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+}
+
+.buttons__additional-buttons {
+  display: flex;
+  gap: 1rem;
 }
 
 .order__attachment {

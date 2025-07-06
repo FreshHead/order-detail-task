@@ -3,9 +3,10 @@ import { Status } from '@/types/Status';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import imageUrl from '@/assets/images/starter.webp';
+import { useLocalStorage } from '@vueuse/core';
 
 export const useOrderStore = defineStore('order', () => {
-  const order = ref<Order>({
+  const order = useLocalStorage<Order>('order', {
     title: 'Стартер редукторный',
     status: Status.Draft,
     image: {
