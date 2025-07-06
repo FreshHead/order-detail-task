@@ -1,25 +1,12 @@
 <script setup lang="ts">
-import { computed, useTemplateRef } from 'vue';
-import {
-  NH1,
-  NH2,
-  NUpload,
-  NUploadDragger,
-  NIcon,
-  NForm,
-  NFormItem,
-  NInput,
-  NSelect,
-  NText,
-  NButton,
-  type UploadSettledFileInfo,
-  type UploadFileInfo,
-} from 'naive-ui';
-import { ArchiveOutline as ArchiveIcon } from '@vicons/ionicons5';
+import { useTemplateRef } from 'vue';
+import { NH1, NH2, NForm, NFormItem, NInput, NSelect, NButton } from 'naive-ui';
 import { useOrderStore } from '@/stores/orderStore';
 import Editor from './Editor.vue';
 import { storeToRefs } from 'pinia';
 import { useCloned } from '@vueuse/core';
+import AttachmentsUpload from './AttachmentsUpload.vue';
+import ImageUpload from './ImageUpload.vue';
 
 const emit = defineEmits(['saved', 'cancel']);
 
@@ -29,12 +16,6 @@ const { order, statuses } = storeToRefs(store);
 const { cloned: state } = useCloned(order.value);
 
 const orderForm = useTemplateRef('orderForm');
-
-const previewFileList = computed<UploadFileInfo[] | undefined>(() => {
-  if (state.value.image) {
-    return [state.value.image];
-  }
-});
 
 const rules = {
   title: {
@@ -58,17 +39,6 @@ const rules = {
   },
 };
 
-function onImageUpdate(fileInfoList: UploadSettledFileInfo[]) {
-  const newFile = fileInfoList.pop();
-  if (newFile?.file) {
-    state.value.image = { ...newFile, url: URL.createObjectURL(newFile.file) };
-  }
-}
-
-function onAttachmentsUpdate(files: UploadSettledFileInfo[]) {
-  state.value.filenames = files.map((file) => file.name);
-}
-
 function onSave() {
   if (orderForm.value) {
     orderForm.value.validate((errors) => {
@@ -89,32 +59,9 @@ function onCancel() {
   <div class="order-form">
     <div>
       <n-h2>Изображение</n-h2>
-      <n-upload
-        accept="image/*"
-        :file-list="previewFileList"
-        list-type="image"
-        @update-file-list="onImageUpdate"
-      >
-        <n-upload-dragger>
-          <div>
-            <n-icon size="48" :depth="3">
-              <ArchiveIcon />
-            </n-icon>
-          </div>
-          <n-text> Нажмите или перетащите изображение заказа </n-text>
-        </n-upload-dragger>
-      </n-upload>
+      <ImageUpload v-model="state.image" />
       <n-h2>Вложения</n-h2>
-      <n-upload multiple directory-dnd :max="5" @update-file-list="onAttachmentsUpdate">
-        <n-upload-dragger>
-          <div>
-            <n-icon size="48" :depth="3">
-              <ArchiveIcon />
-            </n-icon>
-          </div>
-          <n-text> Нажмите или перетащите вложенные файлы </n-text>
-        </n-upload-dragger>
-      </n-upload>
+      <AttachmentsUpload v-model="state.files" />
     </div>
     <n-form ref="orderForm" :model="state" :rules="rules">
       <n-h1>Информация о заказе</n-h1>

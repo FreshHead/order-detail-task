@@ -5,8 +5,8 @@ export interface Order {
   title: string;
   description?: string;
   status: Status;
-  image?: UploadFileInfo & { url: string };
-  filenames: string[];
+  image?: UploadFileInfo;
+  files: UploadFileInfo[];
   manufacturer: {
     name: string;
     website?: string;

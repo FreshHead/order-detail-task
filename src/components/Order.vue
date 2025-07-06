@@ -18,6 +18,8 @@ const statusStepsMap = statuses.value.reduce(
   {} as Record<Status, number>,
 );
 
+const filenames = computed(() => order.value.files.map(({ name }) => name));
+
 const currentStep = computed(() => statusStepsMap[order.value.status]);
 </script>
 <template>
@@ -25,10 +27,10 @@ const currentStep = computed(() => statusStepsMap[order.value.status]);
     <div>
       <n-image :src="order.image?.url" :show-toolbar="false" width="100%" />
       <n-h2>Вложения</n-h2>
-      <n-text v-if="order.filenames.length === 0"
+      <n-text v-if="filenames.length === 0"
         >Вложений нет. Добавьте их в режиме редактирования.</n-text
       >
-      <n-text class="order__attachment" v-else v-for="name in order.filenames">{{ name }}</n-text>
+      <n-text class="order__attachment" v-else v-for="name in filenames">{{ name }}</n-text>
     </div>
     <div>
       <n-h1>{{ order.title }}</n-h1>

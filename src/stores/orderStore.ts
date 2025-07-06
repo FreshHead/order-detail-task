@@ -15,7 +15,7 @@ export const useOrderStore = defineStore('order', () => {
       url: imageUrl,
       status: 'finished',
     },
-    filenames: [],
+    files: [],
     manufacturer: {
       name: 'Завод 1',
       website: 'zavod101.ru',
