@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, useTemplateRef } from 'vue';
+import { computed, useTemplateRef } from 'vue';
 import {
   NH1,
   NH2,
@@ -17,12 +17,15 @@ import {
 import { ArchiveOutline as ArchiveIcon } from '@vicons/ionicons5';
 import { useOrderStore } from '@/stores/orderStore';
 import Editor from './Editor.vue';
-import type { Order } from '@/types/Order';
+import { storeToRefs } from 'pinia';
+import { useCloned } from '@vueuse/core';
 
 const emit = defineEmits(['saved', 'cancel']);
 
-const { order, save } = useOrderStore();
-const state = ref<Order>(JSON.parse(JSON.stringify(order)));
+const store = useOrderStore();
+const { order } = storeToRefs(store);
+
+const { cloned: state } = useCloned(order.value);
 
 const orderForm = useTemplateRef('orderForm');
 
@@ -69,7 +72,7 @@ function onSave() {
   if (orderForm.value) {
     orderForm.value.validate((errors) => {
       if (!errors) {
-        save(state.value);
+        store.save(state.value);
         emit('saved');
       }
     });
@@ -77,7 +80,7 @@ function onSave() {
 }
 
 function onCancel() {
-  state.value = JSON.parse(JSON.stringify(order));
+  state.value = JSON.parse(JSON.stringify(order.value));
   emit('cancel');
 }
 </script>
