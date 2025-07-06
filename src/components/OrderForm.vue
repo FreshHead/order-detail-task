@@ -9,6 +9,7 @@ import {
   NForm,
   NFormItem,
   NInput,
+  NSelect,
   NText,
   NButton,
   type UploadSettledFileInfo,
@@ -23,7 +24,7 @@ import { useCloned } from '@vueuse/core';
 const emit = defineEmits(['saved', 'cancel']);
 
 const store = useOrderStore();
-const { order } = storeToRefs(store);
+const { order, statuses } = storeToRefs(store);
 
 const { cloned: state } = useCloned(order.value);
 
@@ -122,6 +123,9 @@ function onCancel() {
       </n-form-item>
       <n-form-item label="Описание заказа">
         <Editor v-model="state.description" />
+      </n-form-item>
+      <n-form-item label="Статус">
+        <n-select v-model:value="state.status" :options="statuses" />
       </n-form-item>
       <div>
         <n-h2>Данные изготовителя</n-h2>

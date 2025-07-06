@@ -25,11 +25,18 @@ export const useOrderStore = defineStore('order', () => {
     },
   });
 
+  const statuses = ref([
+    { value: Status.Draft, label: 'Черновик' },
+    { value: Status.Published, label: 'Опубликован' },
+    { value: Status.InProgress, label: 'Выполняется' },
+    { value: Status.Finished, label: 'Завершён' },
+  ]);
+
   const order = computed(() => mockOrder.value);
 
   function save(order: Order) {
     mockOrder.value = JSON.parse(JSON.stringify(order));
   }
 
-  return { order, save };
+  return { order, statuses, save };
 });

@@ -1,11 +1,24 @@
 <script setup lang="ts">
 import { useOrderStore } from '@/stores/orderStore';
-import { NButton, NH1, NH2, NImage, NText } from 'naive-ui';
+import { NButton, NH1, NH2, NImage, NText, NSteps, NStep } from 'naive-ui';
 import OrderProp from './OrderProp.vue';
 import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
+import type { Status } from '@/types/Status';
 
 defineEmits(['edit']);
-const { order } = storeToRefs(useOrderStore());
+
+const { order, statuses } = storeToRefs(useOrderStore());
+
+const statusStepsMap = statuses.value.reduce(
+  (acc, el, idx) => {
+    acc[el.value] = idx + 1;
+    return acc;
+  },
+  {} as Record<Status, number>,
+);
+
+const currentStep = computed(() => statusStepsMap[order.value.status]);
 </script>
 <template>
   <div class="order">
@@ -22,6 +35,15 @@ const { order } = storeToRefs(useOrderStore());
       <div v-if="order.description">
         <n-h2>Описание заказа</n-h2>
         <span v-html="order.description" />
+      </div>
+      <div>
+        <n-h2>Статус заказа</n-h2>
+        <n-steps :current="currentStep">
+          <n-step title="Черновик" />
+          <n-step title="Опубликован" />
+          <n-step title="Выполняется" />
+          <n-step title="Завершён" />
+        </n-steps>
       </div>
       <n-h2>Данные изготовителя</n-h2>
       <OrderProp label="Изготовитель" :value="order.manufacturer.name" />
