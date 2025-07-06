@@ -1,11 +1,11 @@
 import type { Order } from '@/types/Order';
 import { Status } from '@/types/Status';
 import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import imageUrl from '@/assets/images/starter.webp';
 
 export const useOrderStore = defineStore('order', () => {
-  const mockOrder = ref<Order>({
+  const order = ref<Order>({
     title: 'Стартер редукторный',
     status: Status.Draft,
     image: {
@@ -32,10 +32,8 @@ export const useOrderStore = defineStore('order', () => {
     { value: Status.Finished, label: 'Завершён' },
   ]);
 
-  const order = computed(() => mockOrder.value);
-
-  function save(order: Order) {
-    mockOrder.value = JSON.parse(JSON.stringify(order));
+  function save(updatedOrder: Order) {
+    order.value = JSON.parse(JSON.stringify(updatedOrder));
   }
 
   return { order, statuses, save };
