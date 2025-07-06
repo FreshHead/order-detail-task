@@ -15,7 +15,7 @@ const { order } = storeToRefs(useOrderStore());
       <n-text v-if="order.filenames.length === 0"
         >Вложений нет. Добавьте их в режиме редактирования.</n-text
       >
-      <n-text v-else v-for="name in order.filenames">{{ name }}</n-text>
+      <n-text class="order__attachment" v-else v-for="name in order.filenames">{{ name }}</n-text>
     </div>
     <div>
       <n-h1>{{ order.title }}</n-h1>
@@ -51,5 +51,10 @@ const { order } = storeToRefs(useOrderStore());
   grid-column: 2;
   display: flex;
   justify-content: flex-end;
+}
+
+.order__attachment {
+  display: block;
+  margin: 1rem 0;
 }
 </style>
