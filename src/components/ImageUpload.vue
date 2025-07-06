@@ -23,6 +23,8 @@ function onImageUpdate(fileInfoList: UploadSettledFileInfo[]) {
   const newFile = fileInfoList.pop();
   if (newFile?.file) {
     image.value = { ...newFile, url: URL.createObjectURL(newFile.file) };
+  } else {
+    image.value = undefined;
   }
 }
 </script>
