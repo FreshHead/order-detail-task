@@ -21,11 +21,17 @@ const statusStepsMap = statuses.value.reduce(
 const filenames = computed(() => order.value.files.map(({ name }) => name));
 
 const currentStep = computed(() => statusStepsMap[order.value.status]);
+
+const imageSrc = computed(() => {
+  if (order.value.image?.url) {
+    return order.value.image.url;
+  }
+});
 </script>
 <template>
   <div class="order">
     <div>
-      <n-image :src="order.image?.url" :show-toolbar="false" width="100%" />
+      <n-image :src="imageSrc" :show-toolbar="false" width="100%" />
       <n-h2>Вложения</n-h2>
       <n-text v-if="filenames.length === 0"
         >Вложений нет. Добавьте их в режиме редактирования.</n-text
