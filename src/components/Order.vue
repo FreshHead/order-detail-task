@@ -22,25 +22,24 @@ const filenames = computed(() => order.value.files.map(({ name }) => name));
 
 const currentStep = computed(() => statusStepsMap[order.value.status]);
 
-const imageSrc = computed(() => {
-  if (order.value.image?.url) {
-    return order.value.image.url;
-  }
-});
+const imageSrc = computed(() => order.value.image?.url || '');
 </script>
 <template>
   <div class="order">
     <div>
       <n-image :src="imageSrc" :show-toolbar="false" width="100%" />
       <n-h2>Вложения</n-h2>
-      <n-text v-if="filenames.length === 0"
-        >Вложений нет. Добавьте их в режиме редактирования.</n-text
-      >
-      <n-text class="order__attachment" v-else v-for="name in filenames">{{ name }}</n-text>
-    </div>
-    <div>
-      <n-h1>{{ order.title }}</n-h1>
-      <div v-if="order.description">
+      <n-text v-if="filenames.length === 0">
+        Вложений нет. Добавьте их в режиме редактирования.
+      </n-text>
+      <n-text
+        v-else
+          class="order__attachment"
+          v-for="name in filenames"
+          :key="name"
+        >
+          {{ name }}
+        </n-text>
         <n-h2>Описание заказа</n-h2>
         <span v-html="order.description" />
       </div>
