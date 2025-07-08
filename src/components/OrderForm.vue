@@ -13,7 +13,7 @@ const emit = defineEmits(['saved', 'cancel']);
 const store = useOrderStore();
 const { order, statuses } = storeToRefs(store);
 
-const { cloned: state } = useCloned(order.value);
+const { cloned: state, sync } = useCloned(order.value, { manual: true });
 
 const orderForm = useTemplateRef('orderForm');
 
@@ -51,7 +51,7 @@ function onSave() {
 }
 
 function onCancel() {
-  state.value = JSON.parse(JSON.stringify(order.value));
+  sync();
   emit('cancel');
 }
 </script>
