@@ -17,10 +17,11 @@ const previewFileList = computed<UploadFileInfo[] | undefined>(() => {
   if (image.value) {
     return [image.value];
   }
+  return undefined;
 });
 
 function onImageUpdate(fileInfoList: UploadSettledFileInfo[]) {
-  const newFile = fileInfoList.pop();
+  const newFile = fileInfoList[fileInfoList.length - 1];
   if (newFile?.file) {
     image.value = { ...newFile, url: URL.createObjectURL(newFile.file) };
   } else {
